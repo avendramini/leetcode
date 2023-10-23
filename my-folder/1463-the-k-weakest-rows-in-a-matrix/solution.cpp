@@ -1,21 +1,24 @@
 class Solution {
 public:
     vector<int> kWeakestRows(vector<vector<int>>& mat, int k) {
-        vector<pair<int,int> > ris;
+        vector<pair<int,int> > sum(mat.size());
         for(int i=0;i<mat.size();i++)
         {
-            int n=0;
+            sum[i].first=0;
+            sum[i].second=i;
             for(int j=0;j<mat[i].size();j++)
             {
-                if(mat[i][j]==1)
-                    n++;
+                sum[i].first+=mat[i][j];
             }
-            ris.push_back({n,i});
         }
-        sort(ris.begin(),ris.end());
-        vector<int> totali;
+        sort(sum.begin(),sum.end());
+        vector<int> indici;
         for(int i=0;i<k;i++)
-            totali.push_back(ris[i].second);
-        return totali;
+        {
+            indici.push_back(sum[i].second);
+        }
+        return indici;
+
+
     }
 };
