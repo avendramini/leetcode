@@ -29,7 +29,7 @@ class Solution:
         ris=[]
         pos=(0,0)
         while pos[1]!=3:
-            print("qua")
+            #print("qua")
             if pos[0]+k<=len(nums) and pos[1]<3 and dp[pos[0]+k][pos[1]+1]+prefix[pos[0]+k]-prefix[pos[0]]==dp[pos[0]][pos[1]]:
                 ris.append(pos[0])
                 pos=(pos[0]+k,pos[1]+1)
