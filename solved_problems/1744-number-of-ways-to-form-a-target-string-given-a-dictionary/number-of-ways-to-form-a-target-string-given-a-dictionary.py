@@ -3,10 +3,10 @@ from collections import defaultdict
 class Solution:
     def rico(self, pos, post, target, words, dp, char_count):
         if post == len(target):
-            dp[pos][post]=1
+            dp[pos][post] = 1
             return dp[pos][post]
         if pos == len(words[0]):
-            dp[pos][post]=0
+            dp[pos][post] = 0
             return dp[pos][post]
         if dp[pos][post] != -1:
             return dp[pos][post]
@@ -33,9 +33,3 @@ class Solution:
 
         dp = [[-1 for _ in range(m + 1)] for _ in range(n + 1)]
         return self.rico(0, 0, target, words, dp, char_count)
-
-# Example usage
-solution = Solution()
-words = ["acca", "bbbb", "caca"]
-target = "aba"
-print(solution.numWays(words, target))  # Output the result
