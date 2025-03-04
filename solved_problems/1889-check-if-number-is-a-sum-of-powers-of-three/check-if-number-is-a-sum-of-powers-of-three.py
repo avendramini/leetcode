@@ -1,15 +1,10 @@
 class Solution:
-    def rico(self, n,powers,index):
-        if n==0:
-            return True
-        if index==-1:
-            return False
-        ris=False
-        if n>=powers[index]:
-            ris|=self.rico(n-powers[index],powers,index-1)
-        ris|=self.rico(n,powers,index-1)
-        return ris
     def checkPowersOfThree(self, n: int) -> bool:
-        powers=[3**i for i in range(15)]
-        return self.rico(n,powers,len(powers)-1)
-        
+        while n > 0:
+            # Check if this power should be used twice
+            if n % 3 == 2:
+                return False
+            # Divide n by 3 to move to the next greater power
+            n //= 3
+        # The ternary representation of n consists only of 0s and 1s
+        return True
