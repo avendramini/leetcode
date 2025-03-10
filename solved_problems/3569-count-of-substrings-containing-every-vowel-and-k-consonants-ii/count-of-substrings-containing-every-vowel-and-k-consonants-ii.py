@@ -1,52 +1,36 @@
 class Solution:
     def _isVowel(self, c: str) -> bool:
-        return c == "a" or c == "e" or c == "i" or c == "o" or c == "u"
+        return c in ["a", "e", "i", "o", "u"]
 
-    def countOfSubstrings(self, word: str, k: int) -> int:
+    def _atLeastK(self, word: str, k: int) -> int:
         num_valid_substrings = 0
-        start = end = 0
-        vowel_count = {}  # Dictionary to keep counts of vowels
-        consonant_count = 0  # Count of consonants
-        next_consonant = [0] * len(
-            word
-        )  # Array to compute index of next consonant for all indices
-        next_consonant_index = len(word)
+        start = 0
+        end = 0
+        # keep track of counts of vowels and consonants
+        vowel_count = {}
+        consonant_count = 0
 
-        for i in range(len(word) - 1, -1, -1):
-            next_consonant[i] = next_consonant_index
-            if not self._isVowel(word[i]):
-                next_consonant_index = i
-
+        # start sliding window
         while end < len(word):
+            # insert new letter
             new_letter = word[end]
+
+            # update counts
             if self._isVowel(new_letter):
                 vowel_count[new_letter] = vowel_count.get(new_letter, 0) + 1
             else:
                 consonant_count += 1
 
-            while (
-                consonant_count > k
-            ):  # Shrink window if too many consonants are present
+            # shrink window while we have a valid substring
+            while len(vowel_count) == 5 and consonant_count >= k:
+                num_valid_substrings += len(word) - end
                 start_letter = word[start]
                 if self._isVowel(start_letter):
-                    vowel_count[start_letter] -= 1
-                    if vowel_count[start_letter] == 0:
-                        del vowel_count[start_letter]
-                else:
-                    consonant_count -= 1
-                start += 1
-
-            while (
-                start < len(word)
-                and len(vowel_count) == 5
-                and consonant_count == k
-            ):  # Try to shrink if window is valid
-                num_valid_substrings += next_consonant[end] - end
-                start_letter = word[start]
-                if self._isVowel(start_letter):
-                    vowel_count[start_letter] -= 1
-                    if vowel_count[start_letter] == 0:
-                        del vowel_count[start_letter]
+                    vowel_count[start_letter] = (
+                        vowel_count.get(start_letter) - 1
+                    )
+                    if vowel_count.get(start_letter) == 0:
+                        vowel_count.pop(start_letter)
                 else:
                     consonant_count -= 1
                 start += 1
@@ -54,3 +38,6 @@ class Solution:
             end += 1
 
         return num_valid_substrings
+
+    def countOfSubstrings(self, word: str, k: int) -> int:
+        return self._atLeastK(word, k) - self._atLeastK(word, k + 1)
